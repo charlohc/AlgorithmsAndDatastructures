@@ -10,25 +10,30 @@ public class Hashtable {
     static int placementInt;
     static int nameValueInt;
     static int nrOfCollisions = 0;
+    int characterNumber = 1;
 
     public int getValueName(String name) {
         int nameValue = 0;
         int letterValue = 0;
         String nameWithoutSpaces = name.replaceAll(" ","");
 
-        //System.out.println("name value " + nameWithoutSpaces + ": ");
+        characterNumber = 1;
 
-            for (int j = 0; j < nameWithoutSpaces.length(); j++) {
-                char[] lettersInName = nameWithoutSpaces.toCharArray();
+        for (int j = 0; j < nameWithoutSpaces.length(); j++) {
+            char[] lettersInName = nameWithoutSpaces.toCharArray();
 
-               // if(lettersInName[j] == 'æ')
-                //if(lettersInName[j] == 'ø') letterValue = 38;
-               // if(lettersInName[j] == 'å')
-
+                if(lettersInName[j] == 'æ'){
+                    letterValue = 37;
+                }else if((lettersInName[j] == 'ø') ){ letterValue = 38;
+                }
+                else if(lettersInName[j] == 'å'){
+                    letterValue = 39;
+                }else{
                 letterValue = Character.getNumericValue(lettersInName[j]);
-                nameValue += (letterValue);
-
-            }
+                }
+            nameValue += (letterValue * characterNumber);
+            characterNumber++;
+        }
         return nameValue;
     }
 
@@ -57,12 +62,12 @@ public class Hashtable {
         int nameIntSearch = getValueName(name);
 
         for (LinkedList linkedList : hashtableArray) {
-                if(linkedList.contains(nameIntSearch)){
-                    return true;
-                }
+            if(linkedList.contains(nameIntSearch)){
+                return true;
             }
-        return false;
         }
+        return false;
+    }
 
 
     public static void main (String[]args){
@@ -72,7 +77,7 @@ public class Hashtable {
             File myObj = new File("C:\\Users\\charl\\Documents\\Algoritmer og datastrukturer\\HashtableTextKey\\src\\names.txt");
             Scanner myReader = new Scanner(myObj);
             ArrayList<String> namesList = new ArrayList<>();
-           ArrayList<Integer> namesValue = new ArrayList<>();
+            ArrayList<Integer> namesValue = new ArrayList<>();
 
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
@@ -114,12 +119,10 @@ public class Hashtable {
 
             hashtable.containsKey(name);
             if(hashtable.containsKey(name)){
-                System.out.println(name + " går i klassen!");
+                System.out.println(name + " takes this course!");
             }else{
-                System.out.println(name + " tar ikke dette faget, eller så skrev du ikke inn det fulle navnet...");
+                System.out.println(name + " does not take this course, or you did not type in their full name...");
             }
-
-
 
 
         } catch (FileNotFoundException e) {
@@ -129,4 +132,3 @@ public class Hashtable {
     }
 
 }
-
