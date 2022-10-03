@@ -6,8 +6,8 @@ public class HashtableVsTable {
     static HashMap<Integer,Integer> hashMap = new HashMap<>();
     static int lengthTable = hashtableArray.length;
     static int numbOfNumbs = 113;
-    int nrOfCollisions = 0;
-    int nrOfCollisionsHashMap = 0;
+    static int nrOfCollisionsHashTable = 0;
+    static int nrOfCollisionsHashMap = 0;
 
 
     public int getPositionOneHashTable(int numberValue){
@@ -19,7 +19,7 @@ public class HashtableVsTable {
         return (h1 + (i * h2)) % m;
     }
 
-    public void settInn(int numberValue, int placement){
+    public void placeHashTable(int numberValue, int placement){
         if(hashtableArray[placement] == null){
             LinkedList<Object> linkedList = new LinkedList<>();
             linkedList.add(numberValue);
@@ -38,24 +38,15 @@ public class HashtableVsTable {
                     hashtableArray[placementTwo] = linkedList;
                     break;
                 }
-                nrOfCollisions++;
+                nrOfCollisionsHashTable++;
 
             }
-//TODO: finne plassering til de som ikke blir plassert etter probing
-/*
-            for (LinkedList linkedList : hashtableArray) {
-                if (!linkedList.contains(numberValue)) {
-                    hashtableArray[placement].push(numberValue);
-                    nrOfCollisions++;
-                }
-            }
- */
 
         }
 
     }
 
-    public void settInnHashMap(int numberValue, int placement) {
+    public void placeHashMap(int numberValue, int placement) {
 
         if (hashMap.get(placement) == null) {
             hashMap.put(placement,numberValue);
@@ -81,18 +72,18 @@ public class HashtableVsTable {
     public static void main(String[] args) {
         HashtableVsTable hashtableVsTable = new HashtableVsTable();
         ArrayList<Integer> numbersList = new ArrayList<>();
-        int[] tabel = new int[numbOfNumbs];
 
         for(int i = 0; i < numbOfNumbs; i++){
             Random random = new Random();
             int randomNumber = random.nextInt(1,1000);
             numbersList.add(randomNumber);
+            randomNumberHashMap.add(randomNumber);
         }
 
         long timeHashTableStart = System.nanoTime();
         for (Integer integer : numbersList) {
             int placement = hashtableVsTable.getPositionOneHashTable(integer);
-            hashtableVsTable.settInn(integer,placement);
+            hashtableVsTable.placeHashTable(integer,placement);
         }
         long timeHashTableEnd = System.nanoTime();
 
@@ -100,28 +91,22 @@ public class HashtableVsTable {
             if(hashtableArray[i] == null) hashtableArray[i] = new LinkedList<>();
         }
 
+        System.out.println(" ");
         System.out.println(Arrays.toString(hashtableArray));
 
         int numberOfElements = 0;
-        for (int i = 0; i < hashtableArray.length; i++) {
-            if (!hashtableArray[i].isEmpty()){
+        for (LinkedList linkedList : hashtableArray) {
+            if (!linkedList.isEmpty()) {
                 numberOfElements++;
             }
         }
-        System.out.println("numbers of numbers " + numberOfElements + " / " + numbOfNumbs);
+        //System.out.println("numbers of numbers " + numberOfElements + " / " + numbOfNumbs);
 
-        int lastNumber = 0;
-        for(int i = 0; i < numbOfNumbs; i++){
-            Random random = new Random();
-            int randomNumber = random.nextInt(1,10);
-            lastNumber += randomNumber;
-            randomNumberHashMap.add(lastNumber);
-        }
 
         long startTimeHashMap = System.nanoTime();
         for (Integer integer : randomNumberHashMap) {
             int placementHashMap = hashtableVsTable.getPositionOneHashTable(integer);
-            hashtableVsTable.settInnHashMap(integer, placementHashMap );
+            hashtableVsTable.placeHashMap(integer, placementHashMap );
         }
         long endTimeHashmap = System.nanoTime();
 
@@ -129,15 +114,20 @@ public class HashtableVsTable {
         System.out.println(hashMap);
 
 
-        System.out.println("numbers of elements: "  + hashMap.size() + " / " + numbOfNumbs);
+        //System.out.println("numbers of elements: "  + hashMap.size() + " / " + numbOfNumbs);
         System.out.println("");
         long timeHashTable= (timeHashTableEnd - timeHashTableStart)/1000;
 
         long timeHashMap = (endTimeHashmap - startTimeHashMap)/1000;
 
-        System.out.println("Time usage hash tabel: " + timeHashTable + " micro sec");
+        System.out.println("Time usage hash table: " + timeHashTable + " micro sec");
         System.out.println("Time usage built in java hashMap: " + timeHashMap + " micro sec");
 
+        //Numbers of collisions and load factor are the same for each method
+        System.out.println("\nNumber of collisions: " + nrOfCollisionsHashTable);
+
+        float loadFactor = (float)numbersList.size() / (float)lengthTable;
+        System.out.printf("Load factor " + ("%.2f"),loadFactor);
 
     }
 }

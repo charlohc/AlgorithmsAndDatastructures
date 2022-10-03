@@ -44,13 +44,11 @@ public class Hashtable {
 
     public void settInn(int numberValue, int placement){
 
-        //System.out.print("  number Value: " + numberValue + " index: " + placement);
         if(hashtableArray[placement] == null){
             LinkedList<Object> linkedList = new LinkedList<>();
             linkedList.add(numberValue);
             hashtableArray[placement] = linkedList;
         }else{
-            //System.out.println("Collision at index: " + placement + " numbers " + numberValue);
             hashtableArray[placement].push(numberValue);
             nrOfCollisions++;
 
@@ -72,7 +70,7 @@ public class Hashtable {
 
     public static void main (String[]args){
         Hashtable hashtable = new Hashtable();
-
+//TODO: find out how to reference to file correctly
         try {
             File myObj = new File("C:\\Users\\charl\\Documents\\Algoritmer og datastrukturer\\HashtableTextKey\\src\\names.txt");
             Scanner myReader = new Scanner(myObj);
