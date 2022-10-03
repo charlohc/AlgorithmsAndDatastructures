@@ -2,11 +2,13 @@ import java.util.*;
 
 public class HashtableVsTable {
     static LinkedList[] hashtableArray = new LinkedList[121];
+    static ArrayList<Integer> randomNumberHashMap = new ArrayList<>();
+    static HashMap<Integer,Integer> hashMap = new HashMap<>();
     static int lengthTable = hashtableArray.length;
     static int numbOfNumbs = 113;
-    static int counter = 0;
     int nrOfCollisions = 0;
-    static int counterHashMap = 0;
+    int nrOfCollisionsHashMap = 0;
+
 
     public int getPositionOneHashTable(int numberValue){
         return numberValue % lengthTable;
@@ -27,8 +29,8 @@ public class HashtableVsTable {
             int h1 = getPositionOneHashTable(numberValue);
             int h2 = (numberValue % (lengthTable - 1 ) + 1);
 
-            for (int i = 1; i <= hashtableArray.length; i++) {
-                int placementTwo = probe(h1,h2,i,hashtableArray.length);
+            for (int i = 1; i <= lengthTable; i++) {
+                int placementTwo = probe(h1,h2,i,lengthTable);
 
                 if(hashtableArray[placementTwo] == null){
                     LinkedList<Object> linkedList = new LinkedList<>();
@@ -53,13 +55,33 @@ public class HashtableVsTable {
 
     }
 
+    public void settInnHashMap(int numberValue, int placement) {
+
+        if (hashMap.get(placement) == null) {
+            hashMap.put(placement,numberValue);
+        }else{
+
+            int h1 = getPositionOneHashTable(numberValue);
+            int h2 = (numberValue % (lengthTable - 1 ) + 1);
+
+            for (int i = 1; i <= lengthTable; i++) {
+                int placementTwo = probe(h1,h2,i,lengthTable);
+
+                if(hashMap.get(placementTwo) == null){
+                    hashMap.put(placementTwo,numberValue);
+                    break;
+                }
+                nrOfCollisionsHashMap++;
+
+            }
+        }
+
+    }
 
     public static void main(String[] args) {
         HashtableVsTable hashtableVsTable = new HashtableVsTable();
         ArrayList<Integer> numbersList = new ArrayList<>();
-        ArrayList<Integer> randomNumberHashMap = new ArrayList<>();
         int[] tabel = new int[numbOfNumbs];
-        HashMap<Integer,Integer> hashMap = new HashMap<>();
 
         for(int i = 0; i < numbOfNumbs; i++){
             Random random = new Random();
@@ -68,10 +90,10 @@ public class HashtableVsTable {
         }
 
         long timeHashTableStart = System.nanoTime();
-            for (Integer integer : numbersList) {
-                int placement = hashtableVsTable.getPositionOneHashTable(integer);
-                hashtableVsTable.settInn(integer,placement);
-            }
+        for (Integer integer : numbersList) {
+            int placement = hashtableVsTable.getPositionOneHashTable(integer);
+            hashtableVsTable.settInn(integer,placement);
+        }
         long timeHashTableEnd = System.nanoTime();
 
         for (int i = 0; i < hashtableArray.length; i++) {
@@ -95,26 +117,27 @@ public class HashtableVsTable {
             lastNumber += randomNumber;
             randomNumberHashMap.add(lastNumber);
         }
-        System.out.println(randomNumberHashMap.size());
-
-        /*TODO: er det greit at alle får nøkkel i stigende rekkefølge eller burde jeg tildele de etter tallverdi % lengde tabell?
-        da får jeg ofte at noen får samme nøkkelverdi selv om de er spredt bra, slik at noen overskriver andre - mister noen.
-         */
 
         long startTimeHashMap = System.nanoTime();
-        for (int i = 0; i < randomNumberHashMap.size(); i++) {
-            hashMap.put(i, randomNumberHashMap.get(i));
+        for (Integer integer : randomNumberHashMap) {
+            int placementHashMap = hashtableVsTable.getPositionOneHashTable(integer);
+            hashtableVsTable.settInnHashMap(integer, placementHashMap );
         }
         long endTimeHashmap = System.nanoTime();
 
         System.out.println("");
         System.out.println(hashMap);
-        System.out.println("numbers of elements: "+ hashMap.size() + " / " + numbOfNumbs);
+
+
+        System.out.println("numbers of elements: "  + hashMap.size() + " / " + numbOfNumbs);
         System.out.println("");
-        long timeHashTable= timeHashTableEnd - timeHashTableStart;
-        long timeHashMap = endTimeHashmap - startTimeHashMap;
-        System.out.println("Time in hashtable placement: " + timeHashTable);
-        System.out.println("Time in hashmap placement: " + timeHashMap);
+        long timeHashTable= (timeHashTableEnd - timeHashTableStart)/1000;
+
+        long timeHashMap = (endTimeHashmap - startTimeHashMap)/1000;
+
+        System.out.println("Time usage hash tabel: " + timeHashTable + " micro sec");
+        System.out.println("Time usage built in java hashMap: " + timeHashMap + " micro sec");
+
 
     }
 }
