@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class Hashtable {
+public class StudentSortingTable {
     static LinkedList[] hashtableArray = new LinkedList[117];
     static int placementInt;
     static int nameValueInt;
@@ -69,7 +69,7 @@ public class Hashtable {
 
 
     public static void main (String[]args){
-        Hashtable hashtable = new Hashtable();
+        StudentSortingTable hashtable = new StudentSortingTable();
 
         try {
             File myObj = new File(System.getProperty("user.dir") + System.getProperty("file.separator") +"names.txt");
@@ -108,7 +108,6 @@ public class Hashtable {
 
             float loadFactor = (float)namesList.size() / (float)hashtableArray.length;
             System.out.printf(" \n Load factor " + ("%.2f"),loadFactor);
-
 
             Scanner sc = new Scanner(System.in);
             System.out.println();

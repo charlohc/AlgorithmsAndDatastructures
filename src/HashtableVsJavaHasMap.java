@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class HashtableVsTable {
+public class HashtableVsJavaHasMap {
     static Integer[] hashtableArray = new Integer[11500001];
     static ArrayList<Integer> randomNumberHashMap = new ArrayList<>();
     static HashMap<Integer,Integer> hashMap = new HashMap<>();
@@ -45,7 +45,7 @@ public class HashtableVsTable {
 
 
     public static void main(String[] args) {
-        HashtableVsTable hashtableVsTable = new HashtableVsTable();
+        HashtableVsJavaHasMap hashtableVsTable = new HashtableVsJavaHasMap();
         ArrayList<Integer> numbersList = new ArrayList<>();
 
         int number = 0;
