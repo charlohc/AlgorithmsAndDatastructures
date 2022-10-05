@@ -70,9 +70,9 @@ public class Hashtable {
 
     public static void main (String[]args){
         Hashtable hashtable = new Hashtable();
-//TODO: find out how to reference to file correctly
+
         try {
-            File myObj = new File("C:\\Users\\charl\\Documents\\Algoritmer og datastrukturer\\HashtableTextKey\\src\\names.txt");
+            File myObj = new File(System.getProperty("user.dir") + System.getProperty("file.separator") +"names.txt");
             Scanner myReader = new Scanner(myObj);
             ArrayList<String> namesList = new ArrayList<>();
             ArrayList<Integer> namesValue = new ArrayList<>();
@@ -127,6 +127,7 @@ public class Hashtable {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+
     }
 
 }
